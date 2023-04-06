@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bloc/bloc.dart';
 
@@ -16,9 +16,18 @@ class LoginCubit extends Cubit<LoginState> {
         email: email,
         password: password,
       );
-      emit(LoginSuccessState());
-    } on Exception catch (e) {
-      emit(LoginFailuarState());
+      emit(LoginSuccessState(errMessage: 'Login Success', color: Colors.green));
+    } on FirebaseAuthException catch (ex) {
+      if (ex.code == 'user-not-found') {
+        emit(LoginFailuarState(
+            errMessage: 'No user found for that email', color: Colors.red));
+      } else if (ex.code == 'wrong-password') {
+        emit(
+            LoginFailuarState(errMessage: 'Wrong password', color: Colors.red));
+      }
+    } catch (ex) {
+      emit(LoginFailuarState(
+          errMessage: 'Something is Error', color: Colors.red));
     }
   }
 }
