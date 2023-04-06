@@ -2,8 +2,8 @@ import 'package:chat_app_bloc/components/custom_buttom.dart';
 import 'package:chat_app_bloc/components/custom_text_form_feild.dart';
 import 'package:chat_app_bloc/constant.dart';
 import 'package:chat_app_bloc/screens/chat_page.dart';
+import 'package:chat_app_bloc/screens/cubits/auth_cubit/auth_cubit.dart';
 import 'package:chat_app_bloc/screens/cubits/chat_cubit/chat_cubit.dart';
-import 'package:chat_app_bloc/screens/cubits/register_cubit/register_cubit.dart';
 import 'package:chat_app_bloc/shared/show_snak_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterLoadingState) {
           isloading = true;
@@ -124,9 +124,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: 'REGISTER',
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
-                              BlocProvider.of<RegisterCubit>(context)
-                                  .registerUser(
-                                      email: email!, password: password!);
+                              BlocProvider.of<AuthCubit>(context).registerUser(
+                                  email: email!, password: password!);
                             }
                           },
                         ),
