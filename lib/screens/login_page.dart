@@ -1,8 +1,8 @@
 import 'package:chat_app_bloc/components/custom_buttom.dart';
 import 'package:chat_app_bloc/components/custom_text_form_feild.dart';
 import 'package:chat_app_bloc/constant.dart';
+import 'package:chat_app_bloc/screens/bloc/bloc/auth_bloc.dart';
 import 'package:chat_app_bloc/screens/chat_page.dart';
-import 'package:chat_app_bloc/screens/cubits/auth_cubit/auth_cubit.dart';
 import 'package:chat_app_bloc/screens/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chat_app_bloc/screens/register_page.dart';
 import 'package:chat_app_bloc/shared/show_snak_bar.dart';
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isloading = false;
 
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginloadingState) {
           isloading = true;
@@ -124,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                           text: 'LOGIN',
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(context).loginUser(
-                                  email: email!, password: password!);
+                              BlocProvider.of<AuthBloc>(context).add(LoginEvent(
+                                  email: email!, password: password!));
                             } else {}
                           },
                         ),

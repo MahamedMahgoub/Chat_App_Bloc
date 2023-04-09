@@ -1,3 +1,5 @@
+import 'package:chat_app_bloc/bloc_observer.dart';
+import 'package:chat_app_bloc/screens/bloc/bloc/auth_bloc.dart';
 import 'package:chat_app_bloc/screens/chat_page.dart';
 import 'package:chat_app_bloc/screens/cubits/auth_cubit/auth_cubit.dart';
 import 'package:chat_app_bloc/screens/cubits/chat_cubit/chat_cubit.dart';
@@ -11,14 +13,14 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  Bloc.observer = MyBlocObserver();
+  runApp(const ChatApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class ChatApp extends StatelessWidget {
+  const ChatApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ChatCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AuthBloc(),
         ),
       ],
       child: MaterialApp(
